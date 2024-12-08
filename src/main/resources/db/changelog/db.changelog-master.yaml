@@ -1,0 +1,155 @@
+databaseChangeLog:
+  - changeSet:
+      id:  1-tabela-bicicleta
+      author:  thaissa
+      labels: equipamento_bicicleta
+      comment: adição da tabela de bicicleta
+      changes:
+        - createTable:
+            tableName:  Bicicleta
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  numero
+                  type:  int
+                  constraints:
+                    primaryKey:  false
+                    nullable:  false
+              - column:
+                  name:  marca
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  modelo
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  ano
+                  type:  int
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  status
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  idFuncionario
+                  type:  int
+                  constraints:
+                    nullable:  true
+              - column:
+                  name:  statusAcaoReparador
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  true
+
+  - changeSet:
+      id:  1-tabela-totem
+      author:  thaissa
+      labels: equipamento_totem
+      comment: adição da tabela de totem
+      changes:
+        - createTable:
+            tableName:  Totem
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  localizacao
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  descricao
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+  - changeSet:
+      id:  1-tabela-tranca
+      author:  thaissa
+      labels: equipamento_tranca
+      comment: adição da tabela de tranca
+      changes:
+        - createTable:
+            tableName:  Tranca
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  id_bicicleta
+                  type:  int
+                  constraints:
+                    nullable:  true
+              - column:
+                  name:  localizacao
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  descricao
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+        - addForeignKeyConstraint:
+            baseTableName: Tranca
+            baseColumnNames: id_bicicleta
+            referencedTableName: Bicicleta
+            referencedColumnNames: id
+            constraintName: fk_id_bicicleta
+  - changeSet:
+      id:  1-tabela-TotemTranca
+      author:  thaissa
+      labels: equipamento_TotemTranca
+      comment: adição da tabela associação TotemTranca
+      changes:
+        - createTable:
+            tableName:  TotemTranca
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  id_totem
+                  type:  int
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  id_tranca
+                  type:  int
+                  constraints:
+                    nullable:  false
+        - addForeignKeyConstraint:
+            baseTableName: TotemTranca
+            baseColumnNames: id_totem
+            referencedTableName: Totem
+            referencedColumnNames: id
+            constraintName: fk_id_totem
+        - addForeignKeyConstraint:
+            baseTableName: TotemTranca
+            baseColumnNames: id_tranca
+            referencedTableName: Tranca
+            referencedColumnNames: id
+            constraintName: fk_id_tranca

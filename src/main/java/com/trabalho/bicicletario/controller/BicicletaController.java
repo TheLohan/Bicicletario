@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
 @RestController
 @RequestMapping("/bicicleta")
 public class BicicletaController {
@@ -21,7 +20,7 @@ public class BicicletaController {
         this.bicicletaService = bicicletaService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Iterable<Bicicleta>> getAllBicicletas() {
         return ResponseEntity.ok(bicicletaService.getAllBicicletas());
     }
@@ -32,7 +31,7 @@ public class BicicletaController {
         return ResponseEntity.ok(new RespostaWrapper<>(bicicleta, "Bicicleta encontrada."));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> addBicicleta(@RequestBody Bicicleta bicicleta) {
         bicicletaService.addBicicleta(bicicleta);
         return ResponseEntity.ok("Dados cadastrados.");

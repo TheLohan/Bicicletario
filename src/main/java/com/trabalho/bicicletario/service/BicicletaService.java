@@ -31,9 +31,6 @@ public class BicicletaService {
         if(!bicicleta.dadosValidos()){
             throw new IllegalArgumentException("Dados invalidos.");
         }
-        if(bicicletaRepository.existsById(bicicleta.getId())) {
-            throw new EntityExistsException("Bicicleta com esse ID \" + id + \" já existe.");
-        }
         bicicletaRepository.save(bicicleta);
     }
 
