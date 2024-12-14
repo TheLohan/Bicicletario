@@ -1,7 +1,10 @@
 package com.trabalho.bicicletario.service;
 
+import com.trabalho.bicicletario.dto.RedeDTO;
 import com.trabalho.bicicletario.model.Bicicleta;
+import com.trabalho.bicicletario.model.Tranca;
 import com.trabalho.bicicletario.repository.BicicletaRepository;
+import com.trabalho.bicicletario.repository.TrancaRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -13,30 +16,44 @@ import java.util.Optional;
 @Service
 public class BicicletaService {
     private final BicicletaRepository bicicletaRepository;
+    private final TrancaRepository trancaRepository;
+    private final TrancaService trancaService;
 
-    public BicicletaService(BicicletaRepository bicicletaRepository) {
+    public BicicletaService(BicicletaRepository bicicletaRepository, TrancaRepository trancaRepository, TrancaService trancaService) {
         this.bicicletaRepository = bicicletaRepository;
+        this.trancaRepository = trancaRepository;
+        this.trancaService = trancaService;
     }
 
     public Iterable<Bicicleta> getAllBicicletas() {
         return bicicletaRepository.findAll();
     }
 
-    public Optional<Bicicleta> getBicicleta(Integer id) {
-        return Optional.ofNullable(bicicletaRepository.findById(id)
-                .orElseThrow(() -> new EntityExistsException("Não encontrado")));
+    public Bicicleta getBicicleta(Long id) {
+        return bicicletaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
     }
 
     public void addBicicleta(Bicicleta bicicleta) {
-        if(!bicicleta.dadosValidos()){
+        if(!bicicleta.dadosValidos())
             throw new IllegalArgumentException("Dados invalidos.");
-        }
+
         bicicletaRepository.save(bicicleta);
     }
 
-    public void updateBicicleta(Integer id, Bicicleta bicicleta) {
-        Bicicleta bicicletaExistente = bicicletaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado."));
+    public void integrarNaRede(RedeDTO rede ){
+        Bicicleta bicicleta = getBicicleta(rede.getIdBicicleta());
+        Tranca tranca = trancaService.getTranca(rede.getIdTranca());
+        tranca.setBicicleta(bicicleta.getId());
+        bicicleta.setIdFuncionario(rede.getIdFuncionario());
+    }
+
+    public void updateBicicleta(Long id, Bicicleta bicicleta) {
+        Bicicleta bicicletaExistente = getBicicleta(id);
+
+        if(!bicicleta.dadosValidos()){
+            throw new IllegalArgumentException("Dados invalidos.");
+        }
 
         bicicletaExistente.setAno(bicicleta.getAno());
         bicicletaExistente.setStatus(bicicleta.getStatus());
@@ -48,9 +65,17 @@ public class BicicletaService {
 
     }
 
-    public void deleteBicicleta(Integer id) {
-        bicicletaRepository.deleteById(id);
+    public void deleteBicicleta(Long id) {
+        Bicicleta bicicleta = getBicicleta(id);
+        bicicletaRepository.delete(bicicleta);
     }
 
+    public void alterarStatusBicicleta(Long id, String status) {
+        Bicicleta bicicletaExistente = getBicicleta(id);
+
+        bicicletaExistente.setStatus(status);
+
+        bicicletaRepository.save(bicicletaExistente);
+    }
 
 }

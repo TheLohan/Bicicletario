@@ -12,13 +12,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Totem {
     @Id
-    private int id;
+    private Long id;
     private String localizacao;
     private String descricao;
 
-    public Totem(int id, String localizacao, String descricao) {
+    public Totem(Long id, String localizacao, String descricao) {
         this.id = id;
         this.localizacao = localizacao;
         this.descricao = descricao;
+    }
+
+    public boolean dadosValidos(){
+        return localizacao != null && descricao != null;
     }
 }

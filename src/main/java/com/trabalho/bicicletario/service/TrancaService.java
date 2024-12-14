@@ -2,6 +2,7 @@ package com.trabalho.bicicletario.service;
 
 import com.trabalho.bicicletario.model.Tranca;
 import com.trabalho.bicicletario.repository.TrancaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,26 +15,43 @@ public class TrancaService {
         this.trancaRepository = trancaRepository;
     }
 
-    public Optional<Tranca> getTranca(Long id) {
-        return trancaRepository.findById(id);
+    public Tranca getTranca(Long id) {
+        return trancaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
     }
 
     public Iterable<Tranca> getAllTrancas(){
         return trancaRepository.findAll();
     }
 
-    public Tranca addTranca(Tranca tranca) {
-        return trancaRepository.save(tranca);
+    public void addTranca(Tranca tranca) {
+        if(!tranca.dadosValidos())
+            throw new IllegalArgumentException("Dados invalidos.");
+
+        trancaRepository.save(tranca);
     }
 
     public void updateTranca(Long id, Tranca tranca) {
+        Tranca trancaExistente = getTranca(id);
+
+        if(!tranca.dadosValidos()){
+            throw new IllegalArgumentException("Dados invalidos.");
+        }
+
+        trancaExistente.setAnoDeFabricacao(tranca.getAnoDeFabricacao());
+        trancaExistente.setNumero(tranca.getNumero());
+        trancaExistente.setModelo(tranca.getModelo());
+        trancaExistente.setStatus(tranca.getStatus());
+        trancaExistente.setLocalizacao(tranca.getLocalizacao());
+        trancaExistente.setBicicleta(tranca.getBicicleta());
+
+        trancaRepository.save(trancaExistente);
 
     }
 
     public void deleteTranca(Long id) {
-        trancaRepository.deleteById(id);
+        Tranca tranca = getTranca(id);
+        trancaRepository.delete(tranca);
     }
-
-
 
 }

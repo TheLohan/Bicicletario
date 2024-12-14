@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BicicletaRepository extends CrudRepository<Bicicleta, Integer> {
+public interface BicicletaRepository extends CrudRepository<Bicicleta, Long> {
 
 }

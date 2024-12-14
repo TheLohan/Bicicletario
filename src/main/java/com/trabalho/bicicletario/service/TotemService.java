@@ -1,8 +1,8 @@
 package com.trabalho.bicicletario.service;
 
-
 import com.trabalho.bicicletario.model.Totem;
 import com.trabalho.bicicletario.repository.TotemRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +20,34 @@ public class TotemService {
         return totemRepository.findAll();
     }
 
-    public Optional<Totem> getTotem(long id) {
-        return totemRepository.findById(id);
+    public Totem getTotem(Long id) {
+        return totemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
     }
 
     public void addTotem(Totem totem) {
+        if(!totem.dadosValidos())
+            throw new IllegalArgumentException("Dados invalidos.");
+
         totemRepository.save(totem);
     }
 
-    public void updateTotem(long id) {
+    public void updateTotem(long id, Totem totem) {
+        Totem totemExistente = getTotem(id);
+
+        if(!totem.dadosValidos()){
+            throw new IllegalArgumentException("Dados invalidos.");
+        }
+
+        totemExistente.setDescricao(totem.getDescricao());
+        totemExistente.setLocalizacao(totem.getLocalizacao());
+
+        totemRepository.save(totemExistente);
 
     }
 
     public void deleteTotem(long id) {
-        totemRepository.deleteById(id);
+        Totem totem = getTotem(id);
+        totemRepository.delete(totem);
     }
 }

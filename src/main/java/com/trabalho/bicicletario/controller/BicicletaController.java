@@ -1,14 +1,10 @@
 package com.trabalho.bicicletario.controller;
 
-import com.trabalho.bicicletario.dto.RespostaWrapper;
+import com.trabalho.bicicletario.dto.RedeDTO;
 import com.trabalho.bicicletario.model.Bicicleta;
 import com.trabalho.bicicletario.service.BicicletaService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bicicleta")
@@ -26,27 +22,41 @@ public class BicicletaController {
     }
 
     @GetMapping("/{idBicicleta}")
-    public ResponseEntity<RespostaWrapper<Optional<Bicicleta>>> getBicicleta(@PathVariable Integer idBicicleta) {
-        Optional<Bicicleta> bicicleta = bicicletaService.getBicicleta(idBicicleta);
-        return ResponseEntity.ok(new RespostaWrapper<>(bicicleta, "Bicicleta encontrada."));
+    public ResponseEntity<Bicicleta> getBicicleta(@PathVariable Long idBicicleta) {
+        Bicicleta bicicleta = bicicletaService.getBicicleta(idBicicleta);
+        return ResponseEntity.ok(bicicleta);
     }
 
     @PostMapping
-    public ResponseEntity<String> addBicicleta(@RequestBody Bicicleta bicicleta) {
+    public ResponseEntity<Bicicleta> createBicicleta(@RequestBody Bicicleta bicicleta) {
         bicicletaService.addBicicleta(bicicleta);
-        return ResponseEntity.ok("Dados cadastrados.");
+        Bicicleta bicicletaCadastrada = bicicletaService.getBicicleta(bicicleta.getId());
+        return ResponseEntity.ok(bicicletaCadastrada);
+    }
+
+    @PostMapping("/integrarNaRede")
+    public ResponseEntity<String> integrarNaRede(@RequestBody RedeDTO rede) {
+        integrarNaRede(rede);
+        return ResponseEntity.ok("OK");
     }
 
     @PutMapping("/{idBicicleta}")
-    public ResponseEntity editBicicleta(@PathVariable Integer idBicicleta, @RequestBody Bicicleta bicicleta) {
+    public ResponseEntity<Bicicleta> editBicicleta(@PathVariable Long idBicicleta, @RequestBody Bicicleta bicicleta) {
         bicicletaService.updateBicicleta(idBicicleta, bicicleta);
-        return ResponseEntity.ok("Dados cadastrados!");
+        Bicicleta bicicletaAtualizada = bicicletaService.getBicicleta(idBicicleta);
+        return ResponseEntity.ok(bicicletaAtualizada);
     }
 
     @DeleteMapping("/{idBicicleta}")
-    public ResponseEntity<String> deleteBicicleta(@PathVariable Integer idBicicleta) {
+    public ResponseEntity<String> deleteBicicleta(@PathVariable Long idBicicleta) {
         bicicletaService.deleteBicicleta(idBicicleta);
-        return ResponseEntity.ok("Bicicleta deletada com sucesso!");
+        return ResponseEntity.ok("Dados removidos.");
+    }
+
+    @PostMapping("/{idBicicleta}/status/{acao}")
+    public ResponseEntity<Bicicleta> editStatusBicicleta(@PathVariable Long idBicicleta, @PathVariable String acao){
+        bicicletaService.alterarStatusBicicleta(idBicicleta, acao);
+        return ResponseEntity.ok(bicicletaService.getBicicleta(idBicicleta));
     }
 
 }
