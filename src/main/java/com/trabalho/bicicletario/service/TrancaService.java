@@ -5,6 +5,7 @@ import com.trabalho.bicicletario.dto.InserirTrancaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverTrancaDaRedeDto;
 import com.trabalho.bicicletario.dto.TrancaDTO;
 import com.trabalho.bicicletario.model.*;
+import com.trabalho.bicicletario.repository.BicicletaRepository;
 import com.trabalho.bicicletario.repository.TotemTrancaRepository;
 import com.trabalho.bicicletario.repository.TrancaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,13 +20,11 @@ public class TrancaService {
     private final TrancaRepository trancaRepository;
     private final TotemService totemService;
     private final TotemTrancaRepository totemTrancaRepository;
-    private final BicicletaService bicicletaService;
 
-    public TrancaService(TrancaRepository trancaRepository, TotemService totemService, TotemTrancaRepository totemTrancaRepository, BicicletaService bicicletaService) {
+    public TrancaService(TrancaRepository trancaRepository, TotemService totemService, TotemTrancaRepository totemTrancaRepository ) {
         this.trancaRepository = trancaRepository;
         this.totemService = totemService;
         this.totemTrancaRepository = totemTrancaRepository;
-        this.bicicletaService = bicicletaService;
     }
 
     public Tranca getTranca(Long id) {
@@ -87,18 +86,13 @@ public class TrancaService {
         Tranca tranca = getTranca(idTranca);
         tranca.setStatus(StatusTranca.LIVRE);
         trancaRepository.save(tranca);
-        if(idBicicleta != null){
-            bicicletaService.alterarStatusBicicleta(idBicicleta, StatusBicicleta.DISPONIVEL);
-        }
+
     }
 
     public void destrancar(Long idTranca, Long idBicicleta) {
         Tranca tranca = getTranca(idTranca);
         tranca.setStatus(StatusTranca.OCUPADA);
         trancaRepository.save(tranca);
-        if(idBicicleta != null){
-            bicicletaService.alterarStatusBicicleta(idBicicleta, StatusBicicleta.EM_USO);
-        }
     }
 
     public void integrarNaRede(InserirTrancaNaRedeDTO rede ){
