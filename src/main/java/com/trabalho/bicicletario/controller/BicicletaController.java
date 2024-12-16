@@ -50,8 +50,7 @@ public class BicicletaController {
 
     @PutMapping("/{idBicicleta}")
     public ResponseEntity<Bicicleta> editBicicleta(@PathVariable Long idBicicleta, @RequestBody Bicicleta bicicleta) {
-        bicicletaService.updateBicicleta(idBicicleta, bicicleta);
-        Bicicleta bicicletaAtualizada = bicicletaService.getBicicleta(idBicicleta);
+        Bicicleta bicicletaAtualizada = bicicletaService.updateBicicleta(idBicicleta, bicicleta);
         return ResponseEntity.ok(bicicletaAtualizada);
     }
 

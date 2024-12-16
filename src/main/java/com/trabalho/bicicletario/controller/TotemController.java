@@ -1,8 +1,8 @@
 package com.trabalho.bicicletario.controller;
 
+import com.trabalho.bicicletario.dto.TrancaDTO;
 import com.trabalho.bicicletario.model.Bicicleta;
 import com.trabalho.bicicletario.model.Totem;
-import com.trabalho.bicicletario.model.Tranca;
 import com.trabalho.bicicletario.service.BicicletaService;
 import com.trabalho.bicicletario.service.TotemService;
 import com.trabalho.bicicletario.service.TrancaService;
@@ -38,8 +38,7 @@ public class TotemController {
 
     @PutMapping("/{idTotem}")
     public ResponseEntity<Totem> updateTotem(@PathVariable Long idTotem, @RequestBody Totem totem) {
-        totemService.updateTotem(idTotem, totem);
-        Totem totemAtualizado = totemService.getTotem(totem.getId());
+        Totem totemAtualizado = totemService.updateTotem(idTotem, totem);;
         return ResponseEntity.ok(totemAtualizado);
     }
 
@@ -50,8 +49,8 @@ public class TotemController {
     }
 
     @GetMapping("/{idTotem}/trancas")
-    public ResponseEntity<List<Tranca>> listarTrancasPorTotem(@PathVariable Long idTotem) {
-        List<Tranca> trancas = trancaService.getTrancasByTotem(idTotem);
+    public ResponseEntity<List<TrancaDTO>> listarTrancasPorTotem(@PathVariable Long idTotem) {
+        List<TrancaDTO> trancas = trancaService.getTrancasByTotem(idTotem);
         return ResponseEntity.ok(trancas);
     }
 

@@ -30,27 +30,8 @@ public class Bicicleta {
     @Enumerated(EnumType.STRING)
     private StatusBicicleta status;
 
-    @Column(name = "idFuncionario")
-    private Long idFuncionario;
-
-    @Column(name = "statusAcaoReparador")
-    private String statusAcaoReparador;
-
-    @OneToOne(mappedBy = "bicicleta")
-    private Tranca tranca;
-
-    public Bicicleta(String marca, String modelo, String ano, Long numero, StatusBicicleta status, Long idFuncionario, String statusAcaoReparador) {
-        this.numero = numero;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.ano = ano;
-        this.status = status;
-        this.idFuncionario = idFuncionario;
-        this.statusAcaoReparador = statusAcaoReparador;
-    }
-
     public boolean dadosValidos() {
-        return marca != null && modelo != null && ano != null && numero != null && status != null;
+        return marca == null || modelo == null || ano == null || status == null;
     }
 
 }

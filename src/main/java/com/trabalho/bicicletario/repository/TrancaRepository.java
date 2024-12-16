@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface TrancaRepository extends CrudRepository<Tranca, Long> {
-    public List<Tranca> findAllByTotemId(long totemId);
-    List<Tranca> findAllByTotemId(Long idTotem);
+    Tranca findByNumero(long id);
+    List<Tranca> findByTotemId(Long idTotem);
 }

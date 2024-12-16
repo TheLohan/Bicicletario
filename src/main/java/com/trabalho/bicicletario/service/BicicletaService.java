@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class BicicletaService {
@@ -39,7 +38,7 @@ public class BicicletaService {
     }
 
     public void addBicicleta(Bicicleta bicicleta) {
-        if(!bicicleta.dadosValidos())
+        if(bicicleta.dadosValidos())
             throw new IllegalArgumentException("Dados invalidos.");
 
         bicicletaRepository.save(bicicleta);
@@ -103,21 +102,21 @@ public class BicicletaService {
 
     }
 
-    public void updateBicicleta(Long id, Bicicleta bicicleta) {
+    public Bicicleta updateBicicleta(Long id, Bicicleta bicicleta) {
+
         Bicicleta bicicletaExistente = getBicicleta(id);
 
-        if(!bicicleta.dadosValidos()){
+        if(bicicleta.dadosValidos()){
             throw new IllegalArgumentException("Dados invalidos.");
         }
 
         bicicletaExistente.setAno(bicicleta.getAno());
         bicicletaExistente.setStatus(bicicleta.getStatus());
-        bicicletaExistente.setNumero(bicicleta.getNumero());
         bicicletaExistente.setMarca(bicicleta.getMarca());
         bicicletaExistente.setModelo(bicicleta.getModelo());
 
         bicicletaRepository.save(bicicletaExistente);
-
+        return bicicletaExistente;
     }
 
     public void deleteBicicleta(Long id) {

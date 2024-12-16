@@ -23,23 +23,23 @@ public class TotemService {
     }
 
     public void addTotem(Totem totem) {
-        if(!totem.dadosValidos())
+        if(totem.dadosValidos())
             throw new IllegalArgumentException("Dados invalidos.");
 
         totemRepository.save(totem);
     }
 
-    public void updateTotem(Long id, Totem totem) {
+    public Totem updateTotem(Long id, Totem totem) {
         Totem totemExistente = getTotem(id);
 
-        if(!totem.dadosValidos()){
+        if(totem.dadosValidos()){
             throw new IllegalArgumentException("Dados invalidos.");
         }
 
         totemExistente.setDescricao(totem.getDescricao());
         totemExistente.setLocalizacao(totem.getLocalizacao());
 
-        totemRepository.save(totemExistente);
+        return totemRepository.save(totemExistente);
 
     }
 
