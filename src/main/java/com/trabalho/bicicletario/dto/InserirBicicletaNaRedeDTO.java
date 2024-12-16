@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RedeDTO {
+public class InserirBicicletaNaRedeDTO {
     private Long idTranca;
     private Long idBicicleta;
     private Long idFuncionario;

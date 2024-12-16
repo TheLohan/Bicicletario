@@ -30,7 +30,7 @@ public class TrancaController {
     @PostMapping
     public ResponseEntity<Tranca> createTranca(@RequestBody Tranca tranca) {
         trancaService.addTranca(tranca);
-        Tranca trancaCadastrada = trancaService.getTranca(tranca.getId());
+        Tranca trancaCadastrada = trancaService.getTranca(tranca.getNumero());
         return ResponseEntity.ok(trancaCadastrada);
     }
 
@@ -46,4 +46,17 @@ public class TrancaController {
         trancaService.deleteTranca(idTranca);
         return ResponseEntity.ok("Dados removidos.");
     }
+
+    @PostMapping("/{idTranca}/trancar")
+    public ResponseEntity<String> trancar(@PathVariable Long idTranca, @RequestBody(required = false) Long idBicicleta) {
+        trancaService.trancar(idTranca, idBicicleta);
+        return ResponseEntity.ok("Tranca trancada com sucesso.");
+    }
+
+    @PostMapping("/{idTranca}/destrancar")
+    public ResponseEntity<String> destrancar(@PathVariable Long idTranca, @RequestBody(required = false) Long idBicicleta) {
+        trancaService.destrancar(idTranca, idBicicleta);
+        return ResponseEntity.ok("Tranca trancada com sucesso.");
+    }
+
 }

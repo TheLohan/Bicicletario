@@ -1,17 +1,27 @@
 package com.trabalho.bicicletario.controller;
 
+import com.trabalho.bicicletario.model.Bicicleta;
 import com.trabalho.bicicletario.model.Totem;
+import com.trabalho.bicicletario.model.Tranca;
+import com.trabalho.bicicletario.service.BicicletaService;
 import com.trabalho.bicicletario.service.TotemService;
+import com.trabalho.bicicletario.service.TrancaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/totem")
 public class TotemController {
     private final TotemService totemService;
+    private final TrancaService trancaService;
+    private final BicicletaService bicicletaService;
 
-    public TotemController(TotemService totemService) {
+    public TotemController(TotemService totemService, TrancaService trancaService, BicicletaService bicicletaService) {
         this.totemService = totemService;
+        this.trancaService = trancaService;
+        this.bicicletaService = bicicletaService;
     }
 
     @GetMapping
@@ -27,17 +37,28 @@ public class TotemController {
     }
 
     @PutMapping("/{idTotem}")
-    public ResponseEntity<Totem> updateTotem(@PathVariable int idTotem, @RequestBody Totem totem) {
+    public ResponseEntity<Totem> updateTotem(@PathVariable Long idTotem, @RequestBody Totem totem) {
         totemService.updateTotem(idTotem, totem);
         Totem totemAtualizado = totemService.getTotem(totem.getId());
         return ResponseEntity.ok(totemAtualizado);
     }
 
     @DeleteMapping("/{idTotem}")
-    public ResponseEntity<String> deleteTotem(@PathVariable int idTotem) {
+    public ResponseEntity<String> deleteTotem(@PathVariable Long idTotem) {
         totemService.deleteTotem(idTotem);
         return ResponseEntity.ok("Dados removidos.");
     }
 
+    @GetMapping("/{idTotem}/trancas")
+    public ResponseEntity<List<Tranca>> listarTrancasPorTotem(@PathVariable Long idTotem) {
+        List<Tranca> trancas = trancaService.getTrancasByTotem(idTotem);
+        return ResponseEntity.ok(trancas);
+    }
+
+    @GetMapping("/{idTotem}/bicicletas")
+    public ResponseEntity<List<Bicicleta>> listarBicicletasPorTotem(@PathVariable Long idTotem) {
+        List<Bicicleta> bicicletas = bicicletaService.getBicicletasByTotem(idTotem);
+        return ResponseEntity.ok(bicicletas);
+    }
 
 }

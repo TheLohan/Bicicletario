@@ -1,7 +1,13 @@
 package com.trabalho.bicicletario.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ErroWrapper {
     @JsonProperty("codigo")
     private int codigo;
@@ -9,26 +15,9 @@ public class ErroWrapper {
     @JsonProperty("mensagem")
     private String mensagem;
 
-    public ErroWrapper() {}
-
     public ErroWrapper(int codigo, String mensagem) {
         this.codigo = codigo;
         this.mensagem = mensagem;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
 }

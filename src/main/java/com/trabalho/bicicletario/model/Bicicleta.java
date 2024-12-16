@@ -15,7 +15,7 @@ public class Bicicleta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long numero;
 
     @Column(name = "marca")
     private String marca;
@@ -26,11 +26,9 @@ public class Bicicleta {
     @Column(name = "ano")
     private String ano;
 
-    @Column(name = "numero")
-    private Integer numero;
-
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusBicicleta status;
 
     @Column(name = "idFuncionario")
     private Long idFuncionario;
@@ -38,15 +36,20 @@ public class Bicicleta {
     @Column(name = "statusAcaoReparador")
     private String statusAcaoReparador;
 
-    public Bicicleta(String marca, String modelo, String ano, Integer numero, String status, Long idFuncionario, String statusAcaoReparador) {
-        this.id = id;
+    @OneToOne(mappedBy = "bicicleta")
+    private Tranca tranca;
+
+    public Bicicleta(String marca, String modelo, String ano, Long numero, StatusBicicleta status, Long idFuncionario, String statusAcaoReparador) {
+        this.numero = numero;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
-        this.numero = numero;
         this.status = status;
         this.idFuncionario = idFuncionario;
         this.statusAcaoReparador = statusAcaoReparador;
+    }
+
+    public Bicicleta(Bicicleta bicicleta) {
     }
 
     public boolean dadosValidos() {

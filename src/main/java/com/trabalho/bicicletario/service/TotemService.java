@@ -32,7 +32,7 @@ public class TotemService {
         totemRepository.save(totem);
     }
 
-    public void updateTotem(long id, Totem totem) {
+    public void updateTotem(Long id, Totem totem) {
         Totem totemExistente = getTotem(id);
 
         if(!totem.dadosValidos()){
@@ -46,7 +46,7 @@ public class TotemService {
 
     }
 
-    public void deleteTotem(long id) {
+    public void deleteTotem(Long id) {
         Totem totem = getTotem(id);
         totemRepository.delete(totem);
     }

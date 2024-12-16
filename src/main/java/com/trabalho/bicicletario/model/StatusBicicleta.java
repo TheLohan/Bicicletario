@@ -1,13 +1,13 @@
 package com.trabalho.bicicletario.model;
 
-public enum Status {
+public enum StatusBicicleta {
     DISPONIVEL("Disponível"),
     EM_USO("Em uso"),
     REPARO_SOLICITADO("Reparo solicitado"),
     EM_REPARO("Em reparo"),
     APOSENTADA("Aposentada");
 
-    private Status(String descricao) {
+    private StatusBicicleta(String descricao) {
     }
 
 }
