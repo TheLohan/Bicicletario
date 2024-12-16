@@ -8,6 +8,7 @@ public enum StatusBicicleta {
     APOSENTADA("Aposentada");
 
     private StatusBicicleta(String descricao) {
+
     }
 
 }

@@ -30,7 +30,7 @@ public class TrancaService {
                 .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
     }
 
-    public List<Tranca> GetByTotemId(Long idTotem) {
+    public List<Tranca> getByTotemId(Long idTotem) {
         return trancaRepository.findAllByTotemId(idTotem);
     }
 
@@ -72,7 +72,7 @@ public class TrancaService {
         List<Tranca> trancas = trancaRepository.findAllByTotemId(idTotem);
         return trancas.stream()
                 .map(Tranca::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void trancar(Long idTranca, Long idBicicleta) {
@@ -118,7 +118,6 @@ public class TrancaService {
 
     public void retirarDaRede(RemoverTrancaDaRedeDto rede ){
 
-        Totem totem = totemService.getTotem(rede.getIdTotem());
         Tranca tranca = getTranca(rede.getIdTranca());
 
         if(tranca.getBicicleta() != null){

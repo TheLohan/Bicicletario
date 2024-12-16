@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,11 +134,11 @@ public class BicicletaService {
     }
 
     public List<Bicicleta> getBicicletasByTotem(Long idTotem) {
-        List<Tranca> trancas = trancaService.GetByTotemId(idTotem);
+        List<Tranca> trancas = trancaService.getByTotemId(idTotem);
         return trancas.stream()
-                .filter(tranca -> tranca.getBicicleta() != null)
-                .map(tranca -> new Bicicleta(tranca.getBicicleta()))
-                .collect(Collectors.toList());
+                .map(Tranca::getBicicleta)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
 }

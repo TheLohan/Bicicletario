@@ -3,10 +3,7 @@ package com.trabalho.bicicletario.service;
 import com.trabalho.bicicletario.model.Totem;
 import com.trabalho.bicicletario.repository.TotemRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class TotemService {

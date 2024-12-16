@@ -1,5 +1,7 @@
 package com.trabalho.bicicletario.controller;
 
+import com.trabalho.bicicletario.dto.InserirTrancaNaRedeDTO;
+import com.trabalho.bicicletario.dto.RemoverTrancaDaRedeDto;
 import com.trabalho.bicicletario.model.Tranca;
 import com.trabalho.bicicletario.service.TrancaService;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +59,18 @@ public class TrancaController {
     public ResponseEntity<String> destrancar(@PathVariable Long idTranca, @RequestBody(required = false) Long idBicicleta) {
         trancaService.destrancar(idTranca, idBicicleta);
         return ResponseEntity.ok("Tranca trancada com sucesso.");
+    }
+
+    @PostMapping("/integrarNaRede")
+    public ResponseEntity<String> integrarNaRede(@RequestBody InserirTrancaNaRedeDTO rede) {
+        trancaService.integrarNaRede(rede);
+        return ResponseEntity.ok("Bicicleta foi incluída com sucesso.");
+    }
+
+    @PostMapping("/retirarDaRede")
+    public ResponseEntity<String> retirarDaRede(@RequestBody RemoverTrancaDaRedeDto rede) {
+        trancaService.retirarDaRede(rede);
+        return ResponseEntity.ok("Bicicleta retirada com sucesso.");
     }
 
 }

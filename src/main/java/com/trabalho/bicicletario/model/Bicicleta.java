@@ -49,9 +49,6 @@ public class Bicicleta {
         this.statusAcaoReparador = statusAcaoReparador;
     }
 
-    public Bicicleta(Bicicleta bicicleta) {
-    }
-
     public boolean dadosValidos() {
         return marca != null && modelo != null && ano != null && numero != null && status != null;
     }
