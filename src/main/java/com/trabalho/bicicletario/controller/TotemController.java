@@ -38,7 +38,7 @@ public class TotemController {
 
     @PutMapping("/{idTotem}")
     public ResponseEntity<Totem> updateTotem(@PathVariable Long idTotem, @RequestBody Totem totem) {
-        Totem totemAtualizado = totemService.updateTotem(idTotem, totem);;
+        Totem totemAtualizado = totemService.updateTotem(idTotem, totem);
         return ResponseEntity.ok(totemAtualizado);
     }
 
