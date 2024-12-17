@@ -3,7 +3,7 @@ package com.trabalho.bicicletario.controller;
 import com.trabalho.bicicletario.dto.InserirTrancaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverTrancaDaRedeDto;
 import com.trabalho.bicicletario.dto.TrancaDTO;
-import com.trabalho.bicicletario.model.StatusTranca;
+import com.trabalho.bicicletario.Enum.StatusTranca;
 import com.trabalho.bicicletario.model.Tranca;
 import com.trabalho.bicicletario.service.TrancaService;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class TrancaControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(2, ((Iterable<TrancaDTO>) response.getBody()).spliterator().getExactSizeIfKnown());
+        assertEquals(2, response.getBody().spliterator().getExactSizeIfKnown());
     }
 
     @Test

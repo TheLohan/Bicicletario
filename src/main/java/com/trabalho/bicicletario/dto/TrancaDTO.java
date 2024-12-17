@@ -1,6 +1,6 @@
 package com.trabalho.bicicletario.dto;
 
-import com.trabalho.bicicletario.model.StatusTranca;
+import com.trabalho.bicicletario.Enum.StatusTranca;
 import com.trabalho.bicicletario.model.Tranca;
 import lombok.Getter;
 import lombok.Setter;

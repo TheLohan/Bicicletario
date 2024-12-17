@@ -1,5 +1,6 @@
 package com.trabalho.bicicletario.model;
 
+import com.trabalho.bicicletario.Enum.StatusTranca;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +49,7 @@ public class Tranca {
         this.bicicleta = tranca.getBicicleta();
     }
 
-    public boolean dadosValidos() {
+    public boolean dadosInvalidos() {
         return localizacao == null || anoDeFabricacao == null || modelo == null || status == null;
     }
 

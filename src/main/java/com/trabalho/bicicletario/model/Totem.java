@@ -19,7 +19,7 @@ public class Totem {
     private String localizacao;
     private String descricao;
 
-    public boolean dadosValidos(){
+    public boolean dadosInvalidos(){
         return localizacao == null || descricao == null;
     }
 }

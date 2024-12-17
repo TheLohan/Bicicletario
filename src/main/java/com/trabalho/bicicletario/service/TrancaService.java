@@ -1,10 +1,11 @@
 package com.trabalho.bicicletario.service;
 
+import com.trabalho.bicicletario.Enum.ErroDescricao;
 import com.trabalho.bicicletario.config.Email;
 import com.trabalho.bicicletario.dto.InserirTrancaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverTrancaDaRedeDto;
 import com.trabalho.bicicletario.dto.TrancaDTO;
-import com.trabalho.bicicletario.model.StatusTranca;
+import com.trabalho.bicicletario.Enum.StatusTranca;
 import com.trabalho.bicicletario.model.Totem;
 import com.trabalho.bicicletario.model.TotemTranca;
 import com.trabalho.bicicletario.model.Tranca;
@@ -31,7 +32,7 @@ public class TrancaService {
 
     public TrancaDTO getTranca(Long id) {
         Tranca tranca = trancaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
         return new TrancaDTO(tranca);
     }
 
@@ -47,11 +48,11 @@ public class TrancaService {
     }
 
     public void addTranca(Tranca tranca) {
-        if(tranca.dadosValidos())
-            throw new IllegalArgumentException("Dados invalidos.");
+        if(tranca.dadosInvalidos())
+            throw new IllegalArgumentException(ErroDescricao.DADOS_INVALIDOS.getDescricao());
 
         if(trancaRepository.existsByNumero(tranca.getNumero()))
-            throw new IllegalArgumentException("Dados invalidos.");
+            throw new IllegalArgumentException(ErroDescricao.DADOS_INVALIDOS.getDescricao());
 
         trancaRepository.save(tranca);
     }
@@ -60,7 +61,7 @@ public class TrancaService {
         Tranca trancaExistente = trancaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
 
-        if(tranca.dadosValidos()){
+        if(tranca.dadosInvalidos()){
             throw new IllegalArgumentException("Dados invalidos.");
         }
 
@@ -87,7 +88,7 @@ public class TrancaService {
 
     public TrancaDTO trancar(Long idTranca, Long idBicicleta) {
         Tranca tranca = trancaRepository.findById(idTranca)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
         tranca.setStatus(StatusTranca.LIVRE);
         trancaRepository.save(tranca);
         return new TrancaDTO(tranca);
@@ -95,7 +96,7 @@ public class TrancaService {
 
     public TrancaDTO destrancar(Long idTranca, Long idBicicleta) {
         Tranca tranca = trancaRepository.findById(idTranca)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
         tranca.setStatus(StatusTranca.OCUPADA);
         trancaRepository.save(tranca);
         return new TrancaDTO(tranca);
@@ -104,7 +105,7 @@ public class TrancaService {
     public void integrarNaRede(InserirTrancaNaRedeDTO rede ){
 
         Tranca tranca = trancaRepository.findById(rede.getIdTranca())
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
 
         Totem totem = totemService.getTotem(rede.getIdTotem());
 
@@ -134,7 +135,7 @@ public class TrancaService {
     public void retirarDaRede(RemoverTrancaDaRedeDto rede ){
 
         Tranca tranca = trancaRepository.findById(rede.getIdTranca())
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
 
         if(tranca.getBicicleta() != null){
             throw new IllegalArgumentException("Tranca possui bicicleta.");
@@ -167,7 +168,7 @@ public class TrancaService {
 
     public void alterarStatusTranca(Long id, StatusTranca status) {
         Tranca trancaExistente = trancaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
 
         trancaExistente.setStatus(status);
 

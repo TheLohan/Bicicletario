@@ -1,5 +1,8 @@
 package com.trabalho.bicicletario.service;
 
+import com.trabalho.bicicletario.Enum.ErroDescricao;
+import com.trabalho.bicicletario.Enum.StatusBicicleta;
+import com.trabalho.bicicletario.Enum.StatusTranca;
 import com.trabalho.bicicletario.config.Email;
 import com.trabalho.bicicletario.dto.InserirBicicletaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverBicicletaDaRedeDTO;
@@ -34,15 +37,12 @@ public class BicicletaService {
 
     public Bicicleta getBicicleta(Long id) {
         return bicicletaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
     }
 
     public void addBicicleta(Bicicleta bicicleta) {
-        if(bicicleta.dadosValidos())
-            throw new IllegalArgumentException("Dados invalidos.");
-
-        if(bicicletaRepository.existsByNumero(bicicleta.getNumero()))
-           throw new IllegalArgumentException("Dados invalidos.");
+        if(bicicleta.dadosInvalidos() || bicicletaRepository.existsByNumero(bicicleta.getNumero()))
+            throw new IllegalArgumentException(ErroDescricao.DADOS_INVALIDOS.getDescricao());
 
         bicicletaRepository.save(bicicleta);
     }
@@ -52,7 +52,7 @@ public class BicicletaService {
         Bicicleta bicicleta = getBicicleta(rede.getIdBicicleta());
 
         Tranca tranca = trancaRepository.findById(rede.getIdBicicleta())
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
 
         if(bicicleta.getStatus() == StatusBicicleta.EM_USO || bicicleta.getStatus() == StatusBicicleta.EM_REPARO)
             throw new IllegalArgumentException("Status inválido da bicicleta.");
@@ -80,7 +80,7 @@ public class BicicletaService {
         Bicicleta bicicleta = getBicicleta(rede.getIdBicicleta());
 
         Tranca tranca = trancaRepository.findById(rede.getIdBicicleta())
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
 
         if(bicicleta.getStatus() != StatusBicicleta.REPARO_SOLICITADO || tranca.getStatus() == StatusTranca.LIVRE)
             throw new IllegalArgumentException("Status inválido");
@@ -112,8 +112,8 @@ public class BicicletaService {
 
         Bicicleta bicicletaExistente = getBicicleta(id);
 
-        if(bicicleta.dadosValidos()){
-            throw new IllegalArgumentException("Dados invalidos.");
+        if(bicicleta.dadosInvalidos()){
+            throw new IllegalArgumentException(ErroDescricao.DADOS_INVALIDOS.getDescricao());
         }
 
         bicicletaExistente.setAno(bicicleta.getAno());

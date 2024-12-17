@@ -3,7 +3,7 @@ package com.trabalho.bicicletario.controller;
 import com.trabalho.bicicletario.dto.InserirBicicletaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverBicicletaDaRedeDTO;
 import com.trabalho.bicicletario.model.Bicicleta;
-import com.trabalho.bicicletario.model.StatusBicicleta;
+import com.trabalho.bicicletario.Enum.StatusBicicleta;
 import com.trabalho.bicicletario.service.BicicletaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

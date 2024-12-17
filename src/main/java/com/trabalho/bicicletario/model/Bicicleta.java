@@ -1,5 +1,6 @@
 package com.trabalho.bicicletario.model;
 
+import com.trabalho.bicicletario.Enum.StatusBicicleta;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,7 @@ public class Bicicleta {
     @Enumerated(EnumType.STRING)
     private StatusBicicleta status;
 
-    public boolean dadosValidos() {
+    public boolean dadosInvalidos() {
         return marca == null || modelo == null || ano == null || status == null || numero == null;
     }
 

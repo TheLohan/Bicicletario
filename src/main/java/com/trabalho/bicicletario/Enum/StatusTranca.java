@@ -1,5 +1,8 @@
-package com.trabalho.bicicletario.model;
+package com.trabalho.bicicletario.Enum;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusTranca {
     NOVA("Nova"),
     LIVRE("Livre"),
@@ -7,6 +10,9 @@ public enum StatusTranca {
     EM_REPARO("Em reparo"),
     APOSENTADA("Aposentada"),;
 
+    private final String descricao;
+
     StatusTranca(String descricao) {
+        this.descricao = descricao;
     }
 }

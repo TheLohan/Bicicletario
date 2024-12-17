@@ -1,5 +1,6 @@
 package com.trabalho.bicicletario.service;
 
+import com.trabalho.bicicletario.Enum.ErroDescricao;
 import com.trabalho.bicicletario.model.Totem;
 import com.trabalho.bicicletario.repository.TotemRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,12 +20,12 @@ public class TotemService {
 
     public Totem getTotem(Long id) {
         return totemRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(ErroDescricao.NAO_ENCONTRADO.getDescricao()));
     }
 
     public void addTotem(Totem totem) {
-        if(totem.dadosValidos())
-            throw new IllegalArgumentException("Dados invalidos.");
+        if(totem.dadosInvalidos())
+            throw new IllegalArgumentException(ErroDescricao.DADOS_INVALIDOS.getDescricao());
 
         totemRepository.save(totem);
     }
@@ -32,8 +33,8 @@ public class TotemService {
     public Totem updateTotem(Long id, Totem totem) {
         Totem totemExistente = getTotem(id);
 
-        if(totem.dadosValidos()){
-            throw new IllegalArgumentException("Dados invalidos.");
+        if(totem.dadosInvalidos()){
+            throw new IllegalArgumentException(ErroDescricao.DADOS_INVALIDOS.getDescricao());
         }
 
         totemExistente.setDescricao(totem.getDescricao());

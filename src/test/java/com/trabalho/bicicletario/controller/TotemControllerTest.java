@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -47,7 +48,7 @@ class TotemControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(2, ((List<Totem>) response.getBody()).size());
+        assertEquals(2, ((List<Totem>) Objects.requireNonNull(response.getBody())).size());
     }
 
     @Test
@@ -62,7 +63,7 @@ class TotemControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(1L, response.getBody().getId());
+        assertEquals(1L, Objects.requireNonNull(response.getBody()).getId());
     }
 
     @Test
@@ -76,7 +77,7 @@ class TotemControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(1L, response.getBody().getId());
+        assertEquals(1L, Objects.requireNonNull(response.getBody()).getId());
     }
 
     @Test
@@ -142,6 +143,6 @@ class TotemControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(2, response.getBody().size());
+        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
     }
 }

@@ -1,5 +1,8 @@
-package com.trabalho.bicicletario.model;
+package com.trabalho.bicicletario.Enum;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusBicicleta {
     DISPONIVEL("Disponível"),
     EM_USO("Em uso"),
@@ -7,7 +10,10 @@ public enum StatusBicicleta {
     EM_REPARO("Em reparo"),
     APOSENTADA("Aposentada");
 
+    private final String descricao;
+
     StatusBicicleta(String descricao) {
+        this.descricao = descricao;
     }
 
 }
