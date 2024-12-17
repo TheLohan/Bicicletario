@@ -32,25 +32,26 @@ public class BicicletaController {
     @PostMapping
     public ResponseEntity<Bicicleta> createBicicleta(@RequestBody Bicicleta bicicleta) {
         bicicletaService.addBicicleta(bicicleta);
-        Bicicleta bicicletaCadastrada = bicicletaService.getBicicleta(bicicleta.getNumero());
+        Bicicleta bicicletaCadastrada = bicicletaService.getBicicleta(bicicleta.getId());
         return ResponseEntity.ok(bicicletaCadastrada);
     }
 
     @PostMapping("/integrarNaRede")
     public ResponseEntity<String> integrarNaRede(@RequestBody InserirBicicletaNaRedeDTO rede) {
         bicicletaService.integrarNaRede(rede);
-        return ResponseEntity.ok("Bicicleta foi incluída com sucesso.");
+        return ResponseEntity.ok("Dados cadastrados.");
     }
 
     @PostMapping("/retirarDaRede")
     public ResponseEntity<String> retirarDaRede(@RequestBody RemoverBicicletaDaRedeDTO rede) {
         bicicletaService.retirarDaRede(rede);
-        return ResponseEntity.ok("Bicicleta retirada com sucesso.");
+        return ResponseEntity.ok("Dados cadastrados.");
     }
 
     @PutMapping("/{idBicicleta}")
     public ResponseEntity<Bicicleta> editBicicleta(@PathVariable Long idBicicleta, @RequestBody Bicicleta bicicleta) {
-        Bicicleta bicicletaAtualizada = bicicletaService.updateBicicleta(idBicicleta, bicicleta);
+        bicicletaService.updateBicicleta(idBicicleta, bicicleta);
+        Bicicleta bicicletaAtualizada = bicicletaService.getBicicleta(idBicicleta);
         return ResponseEntity.ok(bicicletaAtualizada);
     }
 
@@ -63,7 +64,8 @@ public class BicicletaController {
     @PostMapping("/{idBicicleta}/status/{acao}")
     public ResponseEntity<Bicicleta> editStatusBicicleta(@PathVariable Long idBicicleta, @PathVariable StatusBicicleta acao){
         bicicletaService.alterarStatusBicicleta(idBicicleta, acao);
-        return ResponseEntity.ok(bicicletaService.getBicicleta(idBicicleta));
+        Bicicleta bicicletaAtualizada = bicicletaService.getBicicleta(idBicicleta);
+        return ResponseEntity.ok(bicicletaAtualizada);
     }
 
 }

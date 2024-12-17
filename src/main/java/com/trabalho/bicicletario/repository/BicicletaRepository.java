@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BicicletaRepository extends CrudRepository<Bicicleta, Long> {
-
+    boolean existsByNumero(long numero);
 }

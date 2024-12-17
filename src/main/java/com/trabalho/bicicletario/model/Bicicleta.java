@@ -15,7 +15,7 @@ public class Bicicleta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long numero;
+    private Long id;
 
     @Column(name = "marca")
     private String marca;
@@ -26,12 +26,15 @@ public class Bicicleta {
     @Column(name = "ano")
     private String ano;
 
+    @Column(name = "numero")
+    private Integer numero;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private StatusBicicleta status;
 
     public boolean dadosValidos() {
-        return marca == null || modelo == null || ano == null || status == null;
+        return marca == null || modelo == null || ano == null || status == null || numero == null;
     }
 
 }

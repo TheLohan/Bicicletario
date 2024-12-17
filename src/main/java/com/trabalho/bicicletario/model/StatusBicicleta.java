@@ -7,8 +7,7 @@ public enum StatusBicicleta {
     EM_REPARO("Em reparo"),
     APOSENTADA("Aposentada");
 
-    private StatusBicicleta(String descricao) {
-
+    StatusBicicleta(String descricao) {
     }
 
 }

@@ -4,8 +4,10 @@ import com.trabalho.bicicletario.config.Email;
 import com.trabalho.bicicletario.dto.InserirTrancaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverTrancaDaRedeDto;
 import com.trabalho.bicicletario.dto.TrancaDTO;
-import com.trabalho.bicicletario.model.*;
-import com.trabalho.bicicletario.repository.BicicletaRepository;
+import com.trabalho.bicicletario.model.StatusTranca;
+import com.trabalho.bicicletario.model.Totem;
+import com.trabalho.bicicletario.model.TotemTranca;
+import com.trabalho.bicicletario.model.Tranca;
 import com.trabalho.bicicletario.repository.TotemTrancaRepository;
 import com.trabalho.bicicletario.repository.TrancaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,12 +29,10 @@ public class TrancaService {
         this.totemTrancaRepository = totemTrancaRepository;
     }
 
-    public Tranca getTranca(Long id) {
-        Tranca tranca = trancaRepository.findByNumero(id);
-        if (tranca == null) {
-            throw new EntityNotFoundException("Não encontrado");
-        }
-        return new Tranca(tranca);
+    public TrancaDTO getTranca(Long id) {
+        Tranca tranca = trancaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+        return new TrancaDTO(tranca);
     }
 
     public List<Tranca> getByTotemId(Long idTotem) {
@@ -50,11 +50,15 @@ public class TrancaService {
         if(tranca.dadosValidos())
             throw new IllegalArgumentException("Dados invalidos.");
 
+        if(trancaRepository.existsByNumero(tranca.getNumero()))
+            throw new IllegalArgumentException("Dados invalidos.");
+
         trancaRepository.save(tranca);
     }
 
     public void updateTranca(Long id, Tranca tranca) {
-        Tranca trancaExistente = getTranca(id);
+        Tranca trancaExistente = trancaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
 
         if(tranca.dadosValidos()){
             throw new IllegalArgumentException("Dados invalidos.");
@@ -71,8 +75,7 @@ public class TrancaService {
     }
 
     public void deleteTranca(Long id) {
-        Tranca tranca = getTranca(id);
-        trancaRepository.delete(tranca);
+        trancaRepository.deleteById(id);
     }
 
     public List<TrancaDTO> getTrancasByTotem(Long idTotem) {
@@ -82,22 +85,27 @@ public class TrancaService {
                 .toList();
     }
 
-    public void trancar(Long idTranca, Long idBicicleta) {
-        Tranca tranca = getTranca(idTranca);
+    public TrancaDTO trancar(Long idTranca, Long idBicicleta) {
+        Tranca tranca = trancaRepository.findById(idTranca)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
         tranca.setStatus(StatusTranca.LIVRE);
         trancaRepository.save(tranca);
-
+        return new TrancaDTO(tranca);
     }
 
-    public void destrancar(Long idTranca, Long idBicicleta) {
-        Tranca tranca = getTranca(idTranca);
+    public TrancaDTO destrancar(Long idTranca, Long idBicicleta) {
+        Tranca tranca = trancaRepository.findById(idTranca)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
         tranca.setStatus(StatusTranca.OCUPADA);
         trancaRepository.save(tranca);
+        return new TrancaDTO(tranca);
     }
 
     public void integrarNaRede(InserirTrancaNaRedeDTO rede ){
 
-        Tranca tranca = getTranca(rede.getIdTranca());
+        Tranca tranca = trancaRepository.findById(rede.getIdTranca())
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+
         Totem totem = totemService.getTotem(rede.getIdTotem());
 
         if(tranca.getStatus() != StatusTranca.NOVA && tranca.getStatus() != StatusTranca.EM_REPARO)
@@ -111,9 +119,9 @@ public class TrancaService {
 
         totemTrancaRepository.save(
                 new TotemTranca(
-                        tranca.getNumero(),
+                        tranca.getId(),
                         rede.getIdFuncionario(),
-                        tranca.getNumero(),
+                        tranca.getId(),
                         LocalDateTime.now(),
                         "INSERIR NA REDE",
                         null
@@ -125,7 +133,8 @@ public class TrancaService {
 
     public void retirarDaRede(RemoverTrancaDaRedeDto rede ){
 
-        Tranca tranca = getTranca(rede.getIdTranca());
+        Tranca tranca = trancaRepository.findById(rede.getIdTranca())
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
 
         if(tranca.getBicicleta() != null){
             throw new IllegalArgumentException("Tranca possui bicicleta.");
@@ -143,9 +152,9 @@ public class TrancaService {
 
         totemTrancaRepository.save(
                 new TotemTranca(
-                        tranca.getNumero(),
+                        tranca.getId(),
                         rede.getIdFuncionario(),
-                        tranca.getNumero(),
+                        tranca.getId(),
                         LocalDateTime.now(),
                         "REMOVER DA REDE",
                         rede.getStatusAcaoReparador()
@@ -157,7 +166,8 @@ public class TrancaService {
     }
 
     public void alterarStatusTranca(Long id, StatusTranca status) {
-        Tranca trancaExistente = getTranca(id);
+        Tranca trancaExistente = trancaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
 
         trancaExistente.setStatus(status);
 

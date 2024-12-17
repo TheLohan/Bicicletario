@@ -41,13 +41,18 @@ public class BicicletaService {
         if(bicicleta.dadosValidos())
             throw new IllegalArgumentException("Dados invalidos.");
 
+        if(bicicletaRepository.existsByNumero(bicicleta.getNumero()))
+           throw new IllegalArgumentException("Dados invalidos.");
+
         bicicletaRepository.save(bicicleta);
     }
 
     public void integrarNaRede(InserirBicicletaNaRedeDTO rede ){
 
         Bicicleta bicicleta = getBicicleta(rede.getIdBicicleta());
-        Tranca tranca = trancaService.getTranca(rede.getIdTranca());
+
+        Tranca tranca = trancaRepository.findById(rede.getIdBicicleta())
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
 
         if(bicicleta.getStatus() == StatusBicicleta.EM_USO || bicicleta.getStatus() == StatusBicicleta.EM_REPARO)
             throw new IllegalArgumentException("Status inválido da bicicleta.");
@@ -57,52 +62,53 @@ public class BicicletaService {
 
         bicicletaTrancaRepository.save(
                 new BicicletaTranca(
-                        tranca.getNumero(),
+                        tranca.getId(),
                         rede.getIdFuncionario(),
-                        bicicleta.getNumero(),
+                        bicicleta.getId(),
                         LocalDateTime.now(),
                         "INSERIR NA REDE",
                         null
                 )
         );
 
-        alterarStatusBicicleta(bicicleta.getNumero(), StatusBicicleta.DISPONIVEL);
+        alterarStatusBicicleta(bicicleta, StatusBicicleta.DISPONIVEL);
 
     }
 
     public void retirarDaRede(RemoverBicicletaDaRedeDTO rede ){
 
         Bicicleta bicicleta = getBicicleta(rede.getIdBicicleta());
-        Tranca tranca = trancaService.getTranca(rede.getIdTranca());
+
+        Tranca tranca = trancaRepository.findById(rede.getIdBicicleta())
+                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
 
         if(bicicleta.getStatus() != StatusBicicleta.REPARO_SOLICITADO || tranca.getStatus() == StatusTranca.LIVRE)
             throw new IllegalArgumentException("Status inválido");
 
         if(rede.getStatusAcaoReparador().equalsIgnoreCase("reparo"))
-            alterarStatusBicicleta(bicicleta.getNumero(), StatusBicicleta.EM_REPARO);
+            alterarStatusBicicleta(bicicleta, StatusBicicleta.EM_REPARO);
         else if (rede.getStatusAcaoReparador().equalsIgnoreCase("aposentadoria"))
-            alterarStatusBicicleta(bicicleta.getNumero(), StatusBicicleta.APOSENTADA);
+            alterarStatusBicicleta(bicicleta, StatusBicicleta.APOSENTADA);
 
         tranca.setBicicleta(null);
         trancaRepository.save(tranca);
 
         bicicletaTrancaRepository.save(
                 new BicicletaTranca(
-                        tranca.getNumero(),
+                        tranca.getId(),
                         rede.getIdFuncionario(),
-                        bicicleta.getNumero(),
+                        bicicleta.getId(),
                         LocalDateTime.now(),
                         "REMOVER DA REDE",
                         rede.getStatusAcaoReparador()
                 )
         );
 
-        alterarStatusBicicleta(bicicleta.getNumero(), StatusBicicleta.DISPONIVEL);
         Email.enivarEmail();
 
     }
 
-    public Bicicleta updateBicicleta(Long id, Bicicleta bicicleta) {
+    public void updateBicicleta(Long id, Bicicleta bicicleta) {
 
         Bicicleta bicicletaExistente = getBicicleta(id);
 
@@ -116,7 +122,7 @@ public class BicicletaService {
         bicicletaExistente.setModelo(bicicleta.getModelo());
 
         bicicletaRepository.save(bicicletaExistente);
-        return bicicletaExistente;
+
     }
 
     public void deleteBicicleta(Long id) {
@@ -131,6 +137,13 @@ public class BicicletaService {
 
         bicicletaRepository.save(bicicletaExistente);
     }
+
+    public void alterarStatusBicicleta(Bicicleta bicicleta, StatusBicicleta status) {
+        bicicleta.setStatus(status);
+
+        bicicletaRepository.save(bicicleta);
+    }
+
 
     public List<Bicicleta> getBicicletasByTotem(Long idTotem) {
         List<Tranca> trancas = trancaService.getByTotemId(idTotem);

@@ -15,7 +15,9 @@ public class Tranca {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long numero;
+    private Long id;
+
+    private Integer numero;
 
     private String localizacao;
 
@@ -32,14 +34,15 @@ public class Tranca {
     private Totem totem;
 
     @OneToOne
-    @JoinColumn(name = "bicicleta_id", nullable = true)
+    @JoinColumn(name = "bicicleta_id")
     private Bicicleta bicicleta;
 
     public Tranca(Tranca tranca) {
-        this.numero = tranca.getNumero();
+        this.id = tranca.getId();
         this.localizacao = tranca.getLocalizacao();
         this.anoDeFabricacao = tranca.getAnoDeFabricacao();
         this.modelo = tranca.getModelo();
+        this.numero = tranca.getNumero();
         this.status = tranca.getStatus();
         this.totem = tranca.getTotem();
         this.bicicleta = tranca.getBicicleta();
@@ -47,6 +50,10 @@ public class Tranca {
 
     public boolean dadosValidos() {
         return localizacao == null || anoDeFabricacao == null || modelo == null || status == null;
+    }
+
+    public Integer getBicicletaDaTranca() {
+        return (bicicleta != null) ? bicicleta.getNumero() : null;
     }
 
 }

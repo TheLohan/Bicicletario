@@ -4,7 +4,6 @@ public class Email {
 
     private Email() {}
 
-    public static String enivarEmail(){
-        return "Sucesso";
+    public static void enivarEmail(){
     }
 }

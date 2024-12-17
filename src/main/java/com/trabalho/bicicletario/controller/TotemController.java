@@ -26,7 +26,8 @@ public class TotemController {
 
     @GetMapping
     public ResponseEntity<Iterable<Totem>> getAllTotems() {
-        return ResponseEntity.ok(totemService.getAllTotems());
+        Iterable<Totem> listaDeTotems = totemService.getAllTotems();
+        return ResponseEntity.ok(listaDeTotems);
     }
 
     @PostMapping

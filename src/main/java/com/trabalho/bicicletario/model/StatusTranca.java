@@ -7,6 +7,6 @@ public enum StatusTranca {
     EM_REPARO("Em reparo"),
     APOSENTADA("Aposentada"),;
 
-    private StatusTranca(String descricao) {
+    StatusTranca(String descricao) {
     }
 }

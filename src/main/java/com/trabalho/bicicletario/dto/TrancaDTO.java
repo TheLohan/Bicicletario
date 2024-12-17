@@ -8,18 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TrancaDTO {
-    private Long numero;
+    private Long id;
     private String localizacao;
     private String anoDeFabricacao;
     private String modelo;
     private StatusTranca status;
+    private Integer bicicleta;
 
     public TrancaDTO(Tranca tranca) {
-        this.numero = tranca.getNumero();
+        this.id = tranca.getId();
         this.localizacao = tranca.getLocalizacao();
         this.anoDeFabricacao = tranca.getAnoDeFabricacao();
         this.modelo = tranca.getModelo();
         this.status = tranca.getStatus();
+        this.bicicleta = tranca.getBicicletaDaTranca();
     }
 
 }
