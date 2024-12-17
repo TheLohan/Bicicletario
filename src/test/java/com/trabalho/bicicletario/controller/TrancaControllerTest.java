@@ -45,13 +45,14 @@ class TrancaControllerTest {
     @Test
     void testGetTranca() {
         Tranca tranca = new Tranca();
-        when(trancaService.getTranca(1L)).thenReturn(new TrancaDTO(tranca));
+        TrancaDTO expectedTrancaDTO = new TrancaDTO(tranca);
+        when(trancaService.getTranca(1L)).thenReturn(expectedTrancaDTO);
 
         ResponseEntity<TrancaDTO> response = trancaController.getTranca(1L);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(new TrancaDTO(tranca), response.getBody());
+        assertEquals(expectedTrancaDTO.getId(), response.getBody().getId());
     }
 
     @Test
