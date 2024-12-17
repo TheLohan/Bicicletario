@@ -1,8 +1,8 @@
 package com.trabalho.bicicletario.service;
 
-import com.trabalho.bicicletario.Enum.ErroDescricao;
-import com.trabalho.bicicletario.Enum.StatusBicicleta;
-import com.trabalho.bicicletario.Enum.StatusTranca;
+import com.trabalho.bicicletario.enums.ErroDescricao;
+import com.trabalho.bicicletario.enums.StatusBicicleta;
+import com.trabalho.bicicletario.enums.StatusTranca;
 import com.trabalho.bicicletario.config.Email;
 import com.trabalho.bicicletario.dto.InserirBicicletaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverBicicletaDaRedeDTO;

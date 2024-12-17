@@ -1,6 +1,6 @@
 package com.trabalho.bicicletario.model;
 
-import com.trabalho.bicicletario.Enum.StatusTranca;
+import com.trabalho.bicicletario.enums.StatusTranca;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

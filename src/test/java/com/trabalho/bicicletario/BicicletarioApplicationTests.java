@@ -8,6 +8,7 @@ class BicicletarioApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//Gera o teste
 	}
 
 }

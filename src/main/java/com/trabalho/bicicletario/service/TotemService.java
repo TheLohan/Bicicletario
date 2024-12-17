@@ -1,6 +1,6 @@
 package com.trabalho.bicicletario.service;
 
-import com.trabalho.bicicletario.Enum.ErroDescricao;
+import com.trabalho.bicicletario.enums.ErroDescricao;
 import com.trabalho.bicicletario.model.Totem;
 import com.trabalho.bicicletario.repository.TotemRepository;
 import jakarta.persistence.EntityNotFoundException;

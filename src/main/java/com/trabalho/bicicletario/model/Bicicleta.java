@@ -1,6 +1,6 @@
 package com.trabalho.bicicletario.model;
 
-import com.trabalho.bicicletario.Enum.StatusBicicleta;
+import com.trabalho.bicicletario.enums.StatusBicicleta;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

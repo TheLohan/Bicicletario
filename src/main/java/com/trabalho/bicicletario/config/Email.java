@@ -1,6 +1,7 @@
 package com.trabalho.bicicletario.config;
 
 public class Email {
-    public static void enivarEmail(){
+    public static String enivarEmail(){
+        return "Sucesso";
     }
 }

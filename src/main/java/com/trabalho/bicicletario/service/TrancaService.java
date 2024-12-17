@@ -1,11 +1,11 @@
 package com.trabalho.bicicletario.service;
 
-import com.trabalho.bicicletario.Enum.ErroDescricao;
+import com.trabalho.bicicletario.enums.ErroDescricao;
 import com.trabalho.bicicletario.config.Email;
 import com.trabalho.bicicletario.dto.InserirTrancaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverTrancaDaRedeDto;
 import com.trabalho.bicicletario.dto.TrancaDTO;
-import com.trabalho.bicicletario.Enum.StatusTranca;
+import com.trabalho.bicicletario.enums.StatusTranca;
 import com.trabalho.bicicletario.model.Totem;
 import com.trabalho.bicicletario.model.TotemTranca;
 import com.trabalho.bicicletario.model.Tranca;

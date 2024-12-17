@@ -3,7 +3,7 @@ package com.trabalho.bicicletario.controller;
 import com.trabalho.bicicletario.dto.InserirBicicletaNaRedeDTO;
 import com.trabalho.bicicletario.dto.RemoverBicicletaDaRedeDTO;
 import com.trabalho.bicicletario.model.Bicicleta;
-import com.trabalho.bicicletario.Enum.StatusBicicleta;
+import com.trabalho.bicicletario.enums.StatusBicicleta;
 import com.trabalho.bicicletario.service.BicicletaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

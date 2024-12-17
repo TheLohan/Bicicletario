@@ -1,4 +1,4 @@
-package com.trabalho.bicicletario.Enum;
+package com.trabalho.bicicletario.enums;
 
 import lombok.Getter;
 
